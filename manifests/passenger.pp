@@ -6,6 +6,7 @@
 #   ['puppet_passenger_port']    - The port for the virtual host
 #   ['puppet_docroot']           - Apache documnet root
 #   ['apache_serveradmin']       - The apache server admin
+#   ['apache_install']           - Apache install
 #   ['puppet_conf']              - The puppet config dir
 #   ['puppet_ssldir']            - The pupet ssl dir
 #   ['certname']                 - The puppet certname
@@ -34,15 +35,19 @@ class puppet::passenger(
   $puppet_passenger_port,
   $puppet_docroot,
   $apache_serveradmin,
+  $apache_install,
   $puppet_conf,
   $puppet_ssldir,
   $certname,
   $conf_dir
 ){
-  include apache
+  if $apache_install {
+    include apache
+    class { 'apache::mod::passenger': passenger_max_pool_size => 12, }
+    include apache::mod::ssl
+  }
+
   include puppet::params
-  class { 'apache::mod::passenger': passenger_max_pool_size => 12, }
-  include apache::mod::ssl
 
   if $::osfamily == 'redhat' {
     file{'/var/lib/puppet/reports':

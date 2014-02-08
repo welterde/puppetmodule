@@ -22,6 +22,7 @@
 #  ['puppet_master_service']    - Puppet master service
 #  ['version']                  - Version of the puppet master package to install
 #  ['apache_serveradmin']       - Apache server admin
+#  ['apache_install']           - Apache install
 #  ['pluginsync']               - Enable plugin sync
 #  ['parser']                   - Which parser to use
 #  ['puppetdb_startup_timeout'] - The timeout for puppetdb
@@ -65,6 +66,7 @@ class puppet::master (
   $puppet_master_service    = $::puppet::params::puppet_master_service,
   $version                  = 'present',
   $apache_serveradmin       = $::puppet::params::apache_serveradmin,
+  $apache_install           = true,
   $pluginsync               = true,
   $parser                   = $::puppet::params::parser,
   $puppetdb_startup_timeout = '60',
@@ -110,6 +112,7 @@ class puppet::master (
     puppet_passenger_port  => $puppet_passenger_port,
     puppet_docroot         => $puppet_docroot,
     apache_serveradmin     => $apache_serveradmin,
+    apache_install         => $apache_install,
     puppet_conf            => $::puppet::params::puppet_conf,
     puppet_ssldir          => $::puppet::params::puppet_ssldir,
     certname               => $certname,
